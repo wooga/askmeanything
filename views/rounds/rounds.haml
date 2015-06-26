@@ -1,0 +1,63 @@
+%h1
+  %center
+    Rounds
+
+%small.text-success
+  %a.btn.btn-success{:href => '/rounds/create'}
+    %span.glyphicon.glyphicon-plus
+    Add a new Round
+
+%p
+
+= will_paginate @rounds, renderer: BootstrapPagination::Sinatra
+
+%table.table.table-striped.table-condensed
+  %thead
+    %tr
+      %th Title
+      %th Deadline
+      %th Description
+      %th Questions
+      %th Stats
+      %th
+  %tbody
+    - @rounds.each do |round|
+      %tr{:class => round.state}
+        %td
+          %a{:href => "/rounds/#{round.id}/questions"}
+            &= round.title
+        %td= round.deadline.try(:strftime, '%Y-%m-%d %H:%M %Z')
+        %td&= round.description
+        %td= round.questions.count
+        %td
+          - if round.votable?
+            = " - "
+          - else
+            - stats = round.votes_statistics
+            %table
+              %tr
+                %th Total
+                %td= stats["total_votes"]
+              %tr
+                %th Up
+                %td= stats["up_votes"]
+              %tr
+                %th Down
+                %td= stats["down_votes"]
+              %tr
+                %th Voters
+                %td= stats["voters"]
+        %td
+          - if round.active?
+            %form{:action => "/rounds/#{round.id}/state_update", :method => :POST}
+              .btn-group-vertical{:style => "width: 100px"}
+                %a.btn.btn-sm.btn-primary{:href => "/rounds/#{round.id}/edit"} Edit
+                %button.btn.btn-sm.btn-warning{:type => :submit, :name => :state, :value => :deactivate} Deactivate
+          - elsif round.inactive?
+            %form{:action => "/rounds/#{round.id}/state_update", :method => :POST}
+              .btn-group-vertical{:style => "width: 100px"}
+                %a.btn.btn-sm.btn-primary{:href => "/rounds/#{round.id}/edit"} Edit
+                %button.btn.btn-sm.btn-success{:type => :submit, :name => :state, :value => :activate} Activate
+                %button.btn.btn-sm.btn-danger{:type => :submit, :name => :state, :value => :finalize} Finalize
+
+= will_paginate @rounds, renderer: BootstrapPagination::Sinatra

@@ -1,0 +1,71 @@
+!!! 5
+%html
+  %head
+    %title Woogas AmA Application
+    %meta{:charset => "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge"}
+    %meta{:content => "Woogas Ask Me Anything", :name => "description"}
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+    %link{:href => "//www.wooga.com/wp-content/themes/wooga-dev/images/favicon.ico", :rel => "shortcut icon"}
+
+    %link{:href => "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css", :rel => "stylesheet"}
+    %link{:href => "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css", :rel => "stylesheet"}
+    %link{:href => "//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/css/bootstrap-datetimepicker.min.css", :rel => "stylesheet"}
+
+    %script{:src => "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
+    %script{:src => "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"}
+    %script{:src => "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"}
+    %script{:src => "//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js"}
+    %script{:src => "//cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js"}
+    %script{:src => "//cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/jquery.spin.min.js"}
+
+    :css
+      a.filter.active {
+        text-decoration: underline;
+      }
+
+      li:not(.voted) .voting {
+        margin-top: 10px
+      }
+
+      ul:not(.votable) .voting .vote {
+        font-size: large;
+      }
+
+      .votable .voting .vote {
+        font-size: large;
+        cursor: pointer;
+      }
+
+      .voting .vote.myvote {
+        color: green;
+      }
+
+      .voting .vote.myvote.vote-down {
+        color: red;
+      }
+  %body
+    .container
+      %nav.navbar.navbar-inverse.navbar-fixed-top{:role => :navigation}
+        .navbar-header
+          %a.navbar-brand{:href=>"/"} AmA
+        .navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            %li{:class => (:active if current_page('rounds')) }
+              %a{:href => "/rounds"} Rounds
+
+      #main-app{:style => 'margin-top: 60px'}= yield
+
+    #footer
+      .container
+        %hr
+        %p.text-muted.credit
+          Woogas' Ask Me Anything Application
+
+    :javascript
+      $(document).ready(function() {
+        $('.date-format').each(function() {
+          date = new Date($(this).data().date);
+          $(this).text(moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a'))
+        })
+      })

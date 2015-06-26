@@ -1,0 +1,51 @@
+{
+  "name" : "Wham - AMA Question Hoster",
+  "description": "Hosting for AMA questions",
+  "keywords": [
+    "productivity",
+    "AMA",
+    "AskMeAnything"
+  ],
+  "website": "https://github.com/wooga/wham/blob/master/README.md",
+  "repository": "https://github.com/wooga/wham",
+  "logo": "http://cdn-mkt.wooga.com/logo/wooga-logo-w.png",
+  "scripts": {
+    "postdeploy": "bundle exec rake db:migrate"
+  },
+  "env": {
+    "OAUTH_CLIENT_KEY": {
+      "description": "Key for OAuth2 authentication"
+    },
+    "OAUTH_CLIENT_SECRET": {
+      "description": "Secret for OAuth2 authentication"
+    },
+    "ACCESS_DOMAINS": {
+      "description": "Comma separator list of email domains that should have access",
+      "values": "wooga.com,wooga.net"
+    },
+    "ACCESS_EMAILS": {
+      "description": "Comma separator list of extra emails",
+      "required": false
+    },
+    "COOKIE_SECRET": {
+      "description": "Secret for the cookie storage",
+      "generator": "secret"
+    },
+    "VOTE_SECRET": {
+      "description": "Part of the hashing of emails to ensure anonymity",
+      "generator": "secret"
+    },
+    "SLACK_TOKENS": {
+      "description": "For slack integration, define a comma list of tokens",
+      "required": false
+    },
+    "RACK_ENV": {
+      "description": "Rack environment",
+      "value": "production"
+    }
+  },
+  "addons": [
+    "heroku-postgresql",
+    "papertrail"
+  ]
+}

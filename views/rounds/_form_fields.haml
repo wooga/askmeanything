@@ -1,0 +1,22 @@
+.form-group
+  %label{:for => :title} Title
+  %input.form-control{:id => :title, :name => 'round[title]', :value => @round.title, :placeholder  => 'Title', :type => :text, :required => true}
+
+.form-group
+  %label{:for => :deadline} Deadline
+  .input-group.date
+    %input.form-control{:id => :deadline, :name => 'round[deadline]', :value => @round.deadline.try(:strftime, '%Y-%m-%d %H:%M'), :placeholder  => 'Deadline', :type => :text, :required => true}
+    .input-group-addon
+      .glyphicon.glyphicon-calendar
+
+.form-group
+  %label{:for => :description} Description
+  %textarea.form-control{:id => :description, :name => 'round[description]', :placeholder  => 'Description'}
+    &= @round.description
+
+:javascript
+  $('#deadline').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm',
+    sideBySide: true,
+    useStrict: true
+  });

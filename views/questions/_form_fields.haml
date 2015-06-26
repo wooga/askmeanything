@@ -1,0 +1,4 @@
+.form-group
+  %label{:for => :title} Question
+  %textarea.form-control{:id => :question, :name => 'question[question]', :required => true}
+    &= @question.question

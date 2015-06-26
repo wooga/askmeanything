@@ -1,0 +1,3 @@
+%form{:method => :post, :action=>"/rounds/#{@round.id}/questions/create"}
+  = haml :'questions/_form_fields', :layout => false
+  %button.btn.btn-success{:type => :submit} Create
