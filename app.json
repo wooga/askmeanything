@@ -1,0 +1,36 @@
+{
+  "name" : "Wham - AMA Question Hoster",
+  "description": "Hosting for AMA questions",
+  "keywords": [
+    "productivity",
+    "AMA",
+    "AskMeAnything"
+  ],
+  "website": "https://github.com/wooga/wham/blob/master/README.md",
+  "repository": "https://github.com/wooga/wham",
+  "logo": "http://cdn-mkt.wooga.com/logo/wooga-logo-w.png",
+  "env": {
+    "OAUTH_CLIENT_KEY": {
+      "description": "Key for OAuth2 authentication"
+    },
+    "OAUTH_CLIENT_SECRET": {
+      "description": "Secret for OAuth2 authentication"
+    },
+    "ACCESS_EMAILS": {
+      "description": "Comma separator list of extra emails",
+      "required": false
+    },
+    "COOKIE_SECRET": {
+      "description": "Secret for the cookie storage",
+      "generator": "secret"
+    },
+    "RACK_ENV": {
+      "description": "Rack environment",
+      "value": "production"
+    }
+  },
+  "addons": [
+    "heroku-postgresql",
+    "papertrail"
+  ]
+}
