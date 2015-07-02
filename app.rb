@@ -6,13 +6,11 @@ require 'active_support'
 require 'sinatra'
 require "sinatra/reloader" if development?
 require "sinatra/json"
-require 'sinatra/r18n'
 require 'action_view'
 require 'haml'
 require 'tilt/haml'
 require 'will_paginate-bootstrap'
 
-R18n::I18n.default = 'de'
 ENV['RACK_ENV'] ||= 'development'
 ENV['environment'] = ENV['RACK_ENV']
 
@@ -30,7 +28,6 @@ require_relative 'lib/wham_helper.rb'
 Dir[File.join(File.dirname(__FILE__),'config','initializers','*.rb')].each { |a| require a }
 Dir[File.join(File.dirname(__FILE__),'routes','*.rb')].each { |a| require a }
 
-helpers WhamHelper, Sinatra::R18n
+helpers WhamHelper
 use Rack::Deflater
-register Sinatra::R18n
 use ActiveRecord::ConnectionAdapters::ConnectionManagement

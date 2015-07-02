@@ -44,43 +44,43 @@ class Question < ActiveRecord::Base
   end
 
   def voted?(user = nil)
-    cached(:voted) do
+    aggregated_value(:voted) do
       votes.any? {|vote| vote.user == user}
     end
   end
 
   def myvote(user = nil)
-    cached(:myvote) do
+    aggregated_value(:myvote) do
       votes.find {|vote| vote.user == user}.try(:vote)
     end
   end
 
   def total_votes
-    cached(:vote_count) do
+    aggregated_value(:vote_count) do
       votes.count
     end
   end
 
   def score
-    cached(:score) do
+    aggregated_value(:score) do
       votes.map(&:vote).sum
     end
   end
 
   def up_votes
-    cached(:up_votes) do
+    aggregated_value(:up_votes) do
       votes.map(&:vote).count(1)
     end
   end
 
   def down_votes
-    cached(:down_votes) do
+    aggregated_value(:down_votes) do
       votes.map(&:vote).count(-1)
     end
   end
 
   private
-  def cached(value)
+  def aggregated_value(value)
     if has_attribute?(value)
       read_attribute(value)
     elsif block_given?

@@ -3,7 +3,7 @@ get '/rounds/:id/questions' do
   session[:per_page] = params[:per_page]
 
   @round = Round.find(params[:id])
-  @questions = Question.join_vote_info(session[:email], params[:filter])
+  @questions = Question.join_vote_info(current_user, params[:filter])
     .where(:round => @round).page(params[:page]).per_page(params[:per_page])
 
   haml :index
@@ -34,7 +34,7 @@ post "/rounds/:id/questions/:question_id/vote" do
   halt 400, 'Voting is not possible anymore' unless @round.votable?
 
   question = Question.find(params[:question_id])
-  if question.vote(params[:value].to_i, session[:email])
+  if question.vote(params[:value].to_i, current_user)
     json({
       :id => question.id,
       :html =>  haml(:'questions/_list_item',
