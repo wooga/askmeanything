@@ -1,0 +1,37 @@
+%h1
+  WHAM Rounds
+  %small.text-success
+    %a.btn.btn-success{:href => '/rounds/create'}
+      %span.glyphicon.glyphicon-plus
+      Add a new Round
+
+= will_paginate @rounds, renderer: BootstrapPagination::Sinatra
+%table.table.table-striped.table-condensed
+  %thead
+    %tr
+      %th Title
+      %th Deadline
+      %th Description
+      %th Questions
+      %th
+  %tbody
+    - @rounds.each do |round|
+      %tr{:class => round.state}
+        %td
+          %a{:href => "/rounds/#{round.id}/questions"}
+            &= round.title
+        %td= round.deadline.try(:strftime, '%Y-%m-%d %H:%M %Z')
+        %td&= round.description
+        %td= round.questions.count
+        %td
+          - if round.active?
+            %form{:action => "/rounds/#{round.id}/deactivate", :method => :POST}
+              .btn-group
+                %a.btn.btn-sm.btn-primary{:href => "/rounds/#{round.id}/edit"} Edit
+                %button.btn.btn-sm.btn-danger{:type => :submit} Deactivate
+          - else
+            %form{:action => "/rounds/#{round.id}/activate", :method => :POST}
+              .btn-group
+                %a.btn.btn-sm.btn-primary{:href => "/rounds/#{round.id}/edit"} Edit
+                %button.btn.btn-sm.btn-success{:type => :submit} Activate
+= will_paginate @rounds, renderer: BootstrapPagination::Sinatra

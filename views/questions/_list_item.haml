@@ -1,0 +1,15 @@
+%li.list-group-item.row{:id => "question_#{question.id}", :class => (:voted if question.voted?(current_user)),
+  :data => {:round => question.round_id, :id => question.id, :page => params[:page]}}
+  - unless @round.votable?
+    .col-md-1{:style => "padding:0px;width: 20px"}
+      %h5= "#{question.rank}."
+  .voting.col-md-1{:style => "padding:0px;width: 50px"}
+    .score{:style => "font-size: x-small; color: grey"}
+      = "Score #{question.score}"
+    %i.fa.fa-thumbs-o-up.vote.vote-up{:class => (:myvote if question.myvote(current_user) == 1)}
+      = question.up_votes
+    %i.fa.fa-thumbs-o-down.vote.vote-down{:class => (:myvote if question.myvote(current_user) == -1)}
+      = question.down_votes
+  .col-md-10.vote-text
+    %h5
+      %span.question&= question.question
