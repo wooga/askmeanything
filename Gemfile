@@ -15,9 +15,10 @@ gem 'state_machine', :require => 'state_machine/core'
 gem 'state_machines-activerecord'
 gem 'pg'
 
+gem 'pry'
+gem 'rake'
+
 group :development do
-  gem 'pry'
-  gem 'rake'
   gem 'foreman'
   gem 'dotenv-rails'
 end
