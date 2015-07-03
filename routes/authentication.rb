@@ -1,10 +1,19 @@
+require 'oauth2'
+
 # Scopes are space separated strings
 SCOPES = [
     'https://www.googleapis.com/auth/userinfo.email'
 ].join(' ')
 
+before do
+  unless session[:access_token] || request.path_info =~ /^\/(auth|oauth2callback)/
+    redirect '/auth'
+  end
+end
+
 get "/auth" do
-  redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,:scope => SCOPES,:access_type => "offline")
+  redirect client.auth_code.authorize_url(:redirect_uri => redirect_uri,
+    :scope => SCOPES, :access_type => "offline")
 end
 
 get '/oauth2callback' do

@@ -1,27 +1,33 @@
 require 'rubygems'
 require 'bundler/setup'
-require 'sinatra'
-require 'haml'
 
 require 'active_support'
-require 'active_support/core_ext/object/blank'
 
-ENV['environment'] = ENV['RACK_ENV'] || 'development'
+require 'sinatra'
+require "sinatra/reloader" if development?
+require "sinatra/json"
+require 'action_view'
+require 'haml'
+require 'tilt/haml'
+require 'will_paginate-bootstrap'
+
+ENV['RACK_ENV'] ||= 'development'
+ENV['environment'] = ENV['RACK_ENV']
 
 set :logging, true
 set :static, true
+set :show_exceptions, :after_handler if development?
 
 use(Rack::Session::Cookie,
     :path         => '/',
     :secret       => ENV['COOKIE_SECRET'],
     :expire_after => 86400)
 
-before do
-  unless session[:access_token] || request.path_info =~ /^\/(auth|oauth2callback)/
-    redirect '/auth'
-  end
-end
+require_relative 'lib/wham_helper.rb'
 
-get '/' do
-  ""
-end
+Dir[File.join(File.dirname(__FILE__),'config','initializers','*.rb')].each { |a| require a }
+Dir[File.join(File.dirname(__FILE__),'routes','*.rb')].each { |a| require a }
+
+helpers WhamHelper
+use Rack::Deflater
+use ActiveRecord::ConnectionAdapters::ConnectionManagement
