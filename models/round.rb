@@ -37,11 +37,11 @@ class Round < ActiveRecord::Base
     self.salt ||= Round.generate_salt
   end
 
-  def hashed_user(user)
+  def hashed_mail(mail)
     sha256 = Digest::SHA256.new
     sha256.update(Sinatra::Application.settings.vote_secret)
     sha256.update(salt) if salt
-    sha256.update(user)
+    sha256.update(mail)
     sha256.hexdigest
   end
 end

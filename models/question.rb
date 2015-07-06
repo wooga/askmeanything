@@ -2,13 +2,18 @@ class Question < ActiveRecord::Base
   belongs_to :round
   has_many :votes
 
-  def self.create_question_with_vote(params, user)
+  def self.create_question_with_vote(params, mail)
     Question.transaction do
-      Question.create(params).vote(1, user)
+      Question.create(params).vote(1, mail)
     end
   end
 
-  def self.join_vote_info(round, user, filter)
+  def self.join_vote_info(round, mail, filter)
+    current_user_join_condition = <<-SQL
+      LEFT JOIN votes v1 ON (
+        v1.question_id = questions.id AND v1.hashed_mail = %{hashed_mail}
+      )
+    SQL
     query = all.select("questions.*")
       .select("rank() over (ORDER BY COALESCE(sum(v.vote), 0) desc) as rank")
       .select("COALESCE(sum(v.vote), 0) as score")
@@ -18,10 +23,11 @@ class Question < ActiveRecord::Base
       .select("count(NULLIF(v.vote, -1)) as up_votes")
       .select("max(v1.vote) as myvote")
       .joins("left join votes v on (v.question_id = questions.id)")
-      .joins("left join votes v1 on (v1.question_id = questions.id and v1.hashed_mail = #{ActiveRecord::Base.sanitize(round.hashed_user(user))})")
+      .joins(current_user_join_condition % {
+        :hashed_mail => ActiveRecord::Base.sanitize(round.hashed_mail(mail))
+      })
       .where(:round => round)
       .group("questions.id")
-
 
     if filter == 'myvotes'
       query.having("count(distinct v1.id) > 0")
@@ -32,21 +38,21 @@ class Question < ActiveRecord::Base
     end
   end
 
-  def vote(value, user)
-    vote =  Vote.where(:hashed_mail => round.hashed_user(user), :question => self).first_or_create
+  def vote(value, mail)
+    vote =  Vote.where(:hashed_mail => round.hashed_mail(mail), :question => self).first_or_create
     vote.vote = value
     vote.save
   end
 
-  def voted?(user = nil)
+  def voted?(mail = nil)
     aggregated_value(:voted) do
-       votes.any? {|vote| vote.hashed_mail == round.hashed_user(user)}
+       votes.any? {|vote| vote.hashed_mail == round.hashed_mail(mail)}
     end
   end
 
-  def myvote(user = nil)
+  def myvote(mail = nil)
     aggregated_value(:myvote) do
-      votes.find {|vote| vote.hashed_mail == round.hashed_user(user)}.try(:vote)
+      votes.find {|vote| vote.hashed_mail == round.hashed_mail(mail)}.try(:vote)
     end
   end
 

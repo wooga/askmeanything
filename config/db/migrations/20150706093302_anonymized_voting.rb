@@ -8,7 +8,7 @@ class AnonymizedVoting < ActiveRecord::Migration
       round.update(:salt => Round.generate_salt)
       round.questions.each do |question|
         question.votes.each do |vote|
-          vote.update(:hashed_mail => round.hashed_user(vote.user))
+          vote.update(:hashed_mail => round.hashed_mail(vote.user))
         end
       end
     end
