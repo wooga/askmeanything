@@ -31,12 +31,11 @@ post '/rounds/:id/update' do
   end
 end
 
-post '/rounds/:id/deactivate' do
-  Round.find(params[:id]).deactivate
-  redirect '/rounds'
-end
-
-post '/rounds/:id/activate' do
-  Round.find(params[:id]).activate
+post '/rounds/:id/state_update' do
+  case params[:state]
+    when 'activate' then Round.find(params[:id]).activate
+    when 'deactivate' then Round.find(params[:id]).deactivate
+    when 'finalize' then Round.find(params[:id]).finalize
+  end
   redirect '/rounds'
 end

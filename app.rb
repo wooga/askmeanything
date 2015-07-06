@@ -18,6 +18,9 @@ set :logging, true
 set :static, true
 set :show_exceptions, :after_handler if development?
 
+set :vote_secret, ENV["VOTE_SECRET"]
+raise "vote secret is required" if settings.vote_secret.blank?
+
 use(Rack::Session::Cookie,
     :path         => '/',
     :secret       => ENV['COOKIE_SECRET'],

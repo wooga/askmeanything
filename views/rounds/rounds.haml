@@ -25,13 +25,14 @@
         %td= round.questions.count
         %td
           - if round.active?
-            %form{:action => "/rounds/#{round.id}/deactivate", :method => :POST}
-              .btn-group
+            %form{:action => "/rounds/#{round.id}/state_update", :method => :POST}
+              .btn-group-vertical{:style => "width: 100px"}
                 %a.btn.btn-sm.btn-primary{:href => "/rounds/#{round.id}/edit"} Edit
-                %button.btn.btn-sm.btn-danger{:type => :submit} Deactivate
-          - else
-            %form{:action => "/rounds/#{round.id}/activate", :method => :POST}
-              .btn-group
+                %button.btn.btn-sm.btn-warning{:type => :submit, :name => :state, :value => :deactivate} Deactivate
+          - elsif round.inactive?
+            %form{:action => "/rounds/#{round.id}/state_update", :method => :POST}
+              .btn-group-vertical{:style => "width: 100px"}
                 %a.btn.btn-sm.btn-primary{:href => "/rounds/#{round.id}/edit"} Edit
-                %button.btn.btn-sm.btn-success{:type => :submit} Activate
+                %button.btn.btn-sm.btn-success{:type => :submit, :name => :state, :value => :activate} Activate
+                %button.btn.btn-sm.btn-danger{:type => :submit, :name => :state, :value => :finalize} Finalize
 = will_paginate @rounds, renderer: BootstrapPagination::Sinatra

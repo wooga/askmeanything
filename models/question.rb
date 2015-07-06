@@ -8,11 +8,8 @@ class Question < ActiveRecord::Base
     end
   end
 
-  def self.join_vote_info(user, filter)
-    votes_table_user = Vote.arel_table.alias("v1")
-    questions_table = Question.arel_table
-
-    query = all.select(questions_table[Arel.star])
+  def self.join_vote_info(round, user, filter)
+    query = all.select("questions.*")
       .select("rank() over (ORDER BY COALESCE(sum(v.vote), 0) desc) as rank")
       .select("COALESCE(sum(v.vote), 0) as score")
       .select("count(distinct v.id) as vote_count")
@@ -21,12 +18,10 @@ class Question < ActiveRecord::Base
       .select("count(NULLIF(v.vote, -1)) as up_votes")
       .select("max(v1.vote) as myvote")
       .joins("left join votes v on (v.question_id = questions.id)")
-      .joins(questions_table.join(votes_table_user, Arel::Nodes::OuterJoin).on(
-        votes_table_user[:question_id].eq(questions_table[:id]).and(
-          votes_table_user[:user].eq(user))
-        ).join_sources
-      )
-      .group(questions_table[:id])
+      .joins("left join votes v1 on (v1.question_id = questions.id and v1.hashed_mail = #{ActiveRecord::Base.sanitize(round.hashed_user(user))})")
+      .where(:round => round)
+      .group("questions.id")
+
 
     if filter == 'myvotes'
       query.having("count(distinct v1.id) > 0")
@@ -38,20 +33,20 @@ class Question < ActiveRecord::Base
   end
 
   def vote(value, user)
-    vote = Vote.where(:user => user, :question => self).first_or_create
+    vote =  Vote.where(:hashed_mail => round.hashed_user(user), :question => self).first_or_create
     vote.vote = value
     vote.save
   end
 
   def voted?(user = nil)
     aggregated_value(:voted) do
-      votes.any? {|vote| vote.user == user}
+       votes.any? {|vote| vote.hashed_mail == round.hashed_user(user)}
     end
   end
 
   def myvote(user = nil)
     aggregated_value(:myvote) do
-      votes.find {|vote| vote.user == user}.try(:vote)
+      votes.find {|vote| vote.hashed_mail == round.hashed_user(user)}.try(:vote)
     end
   end
 

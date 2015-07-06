@@ -3,8 +3,8 @@ get '/rounds/:id/questions' do
   session[:per_page] = params[:per_page]
 
   @round = Round.find(params[:id])
-  @questions = Question.join_vote_info(current_user, params[:filter])
-    .where(:round => @round).page(params[:page]).per_page(params[:per_page])
+  @questions = Question.join_vote_info(@round, current_user, params[:filter])
+    .page(params[:page]).per_page(params[:per_page])
 
   haml :index
 end

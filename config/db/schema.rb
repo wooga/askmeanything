@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701071448) do
+ActiveRecord::Schema.define(version: 20150706093302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pgcrypto"
 
   create_table "questions", force: :cascade do |t|
     t.string   "question"
@@ -32,17 +33,18 @@ ActiveRecord::Schema.define(version: 20150701071448) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.string   "state",       default: "active"
+    t.text     "salt"
   end
 
   create_table "votes", force: :cascade do |t|
-    t.string   "user"
     t.integer  "vote"
     t.integer  "question_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.text     "hashed_mail"
   end
 
+  add_index "votes", ["hashed_mail", "question_id"], name: "index_votes_on_hashed_mail_and_question_id", unique: true, using: :btree
   add_index "votes", ["question_id"], name: "index_votes_on_question_id", using: :btree
-  add_index "votes", ["user", "question_id"], name: "index_votes_on_user_and_question_id", unique: true, using: :btree
 
 end
