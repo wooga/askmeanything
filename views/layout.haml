@@ -53,7 +53,6 @@
           %ul.nav.navbar-nav
             %li{:class => (:active if current_page('rounds')) }
               %a{:href => "/rounds"} Rounds
-          %p.navbar-text.pull-right= "Hello #{session[:username]}!"
 
       #main-app{:style => 'margin-top: 60px'}= yield
 
