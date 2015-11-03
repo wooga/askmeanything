@@ -2,3 +2,21 @@
   %label{:for => :title} Question
   %textarea.form-control{:id => :question, :name => 'question[question]', :required => true}
     &= @question.question
+  %label{:id => "limitLabel"}
+    = "#{text_limit} characters left"
+
+:javascript
+  function limitText(textField, limitLabel, limit) {
+    if (textField.value.length > limit) {
+      textField.value = textField.value.substring(0, limit);
+    }
+
+    limitLabel.innerHTML = limit - textField.value.length + " characters left";
+  }
+
+  document.getElementById('question').addEventListener("keydown", function(e) {
+    limitText(this,document.getElementById('limitLabel'), #{text_limit})
+  })
+  document.getElementById('question').addEventListener("keyup", function(e) {
+    limitText(this,document.getElementById('limitLabel'), #{text_limit})
+  })
