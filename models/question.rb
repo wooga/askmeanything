@@ -26,13 +26,13 @@ class Question < ActiveRecord::Base
     # wilson score explanation: http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
     wilson_query_string = "ROUND(((#{up_votes_query_string} + 1.9208) / (#{up_votes_query_string} + #{down_votes_query_string}) - 1.96 * SQRT((#{up_votes_query_string} * #{down_votes_query_string}) / (#{up_votes_query_string} + #{down_votes_query_string}) + 0.9604) / (#{up_votes_query_string} + #{down_votes_query_string})) / (1 + 3.8416 / (#{up_votes_query_string} + #{down_votes_query_string})), 2)"
     query = all.select("questions.*")
+      .select("rank() over (ORDER BY #{wilson_query_string} DESC) as rank")
+      .select("#{wilson_query_string} as score")
       .select("count(distinct v.id) as vote_count")
       .select("count(distinct v1.id) > 0 as voted")
       .select("#{down_votes_query_string} as down_votes")
       .select("#{up_votes_query_string} as up_votes")
       .select("max(v1.vote) as myvote")
-      .select("#{wilson_query_string} as score")
-      .order("#{wilson_query_string} DESC")
       .joins("left join votes v on (v.question_id = questions.id)")
       .joins(CurrentUserJoinCondition % {
         :hashed_mail => ActiveRecord::Base.sanitize(round.hashed_mail(mail))
