@@ -18,7 +18,7 @@ class Question < ActiveRecord::Base
     Question.transaction { Question.create(params) }
   end
 
-  def self.join_vote_info(round, mail, filter)
+  def self.join_vote_info(round, mail, filter, question_id = nil)
     query = all.select("questions.*")
       .select("rank() over (ORDER BY COALESCE(sum(v.vote), 0) desc) as rank")
       .select("COALESCE(sum(v.vote), 0) as score")
@@ -33,6 +33,10 @@ class Question < ActiveRecord::Base
       })
       .where(:round => round)
       .group("questions.id")
+
+    unless question_id.nil?
+      query = query.where("v.id = #{question_id.to_i + 1}")
+    end
 
     if filter == 'myvotes'
       query.having("count(distinct v1.id) > 0")
