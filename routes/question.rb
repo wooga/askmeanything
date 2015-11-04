@@ -15,26 +15,6 @@ get '/rounds/:id/questions/:question_id' do
   haml :single_question
 end
 
-post "/rounds/:id/questions/:question_id/vote" do
-  @round = Round.find(params[:id])
-  halt 400, 'Voting is not possible anymore' unless @round.votable?
-
-  question = Question.find(params[:question_id])
-  if question.vote(params[:value].to_i, current_user)
-    json({
-      :id => question.id,
-      :html =>  haml(:'questions/_list_item',
-        :layout => false,
-        :locals => {
-          :question => question
-        }
-      )
-    })
-  else
-    halt 500, 'Could not save vote.'
-  end
-end
-
 get '/rounds/:id/questions/create' do
   @round = Round.find(params[:id])
   @question = Question.new(:round => @round)
@@ -52,5 +32,25 @@ post '/rounds/:id/questions/create' do
     redirect "/rounds/#{@round.id}/questions"
   else
     haml :"questions/create"
+  end
+end
+
+post "/rounds/:id/questions/:question_id/vote" do
+  @round = Round.find(params[:id])
+  halt 400, 'Voting is not possible anymore' unless @round.votable?
+
+  question = Question.find(params[:question_id])
+  if question.vote(params[:value].to_i, current_user)
+    json({
+      :id => question.id,
+      :html =>  haml(:'questions/_list_item',
+        :layout => false,
+        :locals => {
+          :question => question
+        }
+      )
+    })
+  else
+    halt 500, 'Could not save vote.'
   end
 end
