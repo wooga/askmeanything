@@ -1,4 +1,17 @@
-= haml :round_base, :layout => false
+%h1.row
+  .col-md-10
+    = @round.title
+    %small
+      .span.date-format{:data => {:date => @round.deadline.try(:iso8601)}}
+        = @round.deadline.try(:strftime, '%Y-%m-%d %H:%M %Z')
+  .col-md-2
+    - if @round.votable?
+      %a.btn.btn-success{:href => "/rounds/#{@round.id}/questions/create"}
+        %span.glyphicon.glyphicon-plus
+        Add a new Question
+
+- unless @round.description.nil?
+  %p&= @round.description
 
 .row
   .col-md-8
@@ -33,3 +46,5 @@
       = haml :'questions/_list_item', :layout => false, :locals => {:question => question}
 
 = will_paginate @questions, renderer: BootstrapPagination::Sinatra
+
+%script{:src => "/js/round.js"}
