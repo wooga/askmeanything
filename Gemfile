@@ -15,6 +15,8 @@ gem 'state_machine', :require => 'state_machine/core'
 gem 'state_machines-activerecord'
 gem 'pg'
 
+gem 'statistics2'
+
 gem 'pry'
 gem 'rake'
 

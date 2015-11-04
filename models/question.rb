@@ -1,3 +1,5 @@
+require 'statistics2'
+
 class Question < ActiveRecord::Base
   belongs_to :round
   has_many :votes
@@ -19,13 +21,17 @@ class Question < ActiveRecord::Base
   end
 
   def self.join_vote_info(round, mail, filter, question_id = nil)
+    up_votes_query_string = "count(NULLIF(v.vote, -1))"
+    down_votes_query_string = "count(NULLIF(v.vote, 1))"
+    # wilson score explanation: http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
+    wilson_query_string = "ROUND(((#{up_votes_query_string} + 1.9208) / (#{up_votes_query_string} + #{down_votes_query_string}) - 1.96 * SQRT((#{up_votes_query_string} * #{down_votes_query_string}) / (#{up_votes_query_string} + #{down_votes_query_string}) + 0.9604) / (#{up_votes_query_string} + #{down_votes_query_string})) / (1 + 3.8416 / (#{up_votes_query_string} + #{down_votes_query_string})), 2)"
     query = all.select("questions.*")
-      .select("rank() over (ORDER BY COALESCE(sum(v.vote), 0) desc) as rank")
-      .select("COALESCE(sum(v.vote), 0) as score")
+      .select("rank() over (ORDER BY #{wilson_query_string} DESC) as rank")
+      .select("#{wilson_query_string} as score")
       .select("count(distinct v.id) as vote_count")
       .select("count(distinct v1.id) > 0 as voted")
-      .select("count(NULLIF(v.vote, 1)) as down_votes")
-      .select("count(NULLIF(v.vote, -1)) as up_votes")
+      .select("#{down_votes_query_string} as down_votes")
+      .select("#{up_votes_query_string} as up_votes")
       .select("max(v1.vote) as myvote")
       .joins("left join votes v on (v.question_id = questions.id)")
       .joins(CurrentUserJoinCondition % {
@@ -73,7 +79,14 @@ class Question < ActiveRecord::Base
 
   def score
     aggregated_value(:score) do
-      votes.map(&:vote).sum
+      n = total_votes
+      pos = up_votes
+      if n == 0
+        return 0
+      end
+      z = Statistics2.pnormaldist(1-(1-0.95)/2)
+      phat = 1.0*pos/n
+      ((phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)).round(2)
     end
   end
 
