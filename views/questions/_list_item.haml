@@ -13,14 +13,14 @@
   .col-md-10.vote-text
     %h5
       %span.question&= question.question
-    %button.btn.btn-warning.btn-xs{:id => "question_#{question.id}_share_button"} Share
+    %button.btn.btn-warning.btn-xs{:id => "question_#{question.id}_share_button"} Permalink
     %input.hidden{:id => "question_#{question.id}_share_input"}
     :javascript
-      document.getElementById('question_#{question.id}_share_button').onclick=function() {
+      document.getElementById('question_#{question.id}_share_button').onclick = function() {
         this.classList.add('hidden');
 
         var shareInput = document.getElementById('question_#{question.id}_share_input');
         shareInput.classList.remove('hidden');
-        shareInput.value = location.href.split('?')[0] + '?question_id=#{question.id}';
+        shareInput.value = location.href.split('?')[0] + '/#{question.id}';
         shareInput.select();
       }

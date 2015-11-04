@@ -3,30 +3,16 @@ get '/rounds/:id/questions' do
   session[:per_page] = params[:per_page]
 
   @round = Round.find(params[:id])
-  @questions = Question.join_vote_info(@round, current_user, params[:filter], params[:question_id])
+  @questions = Question.join_vote_info(@round, current_user, params[:filter])
     .page(params[:page]).per_page(params[:per_page])
 
   haml :index
 end
 
-get '/rounds/:id/questions/create' do
+get '/rounds/:id/questions/:question_id' do
   @round = Round.find(params[:id])
-  @question = Question.new(:round => @round)
-  haml :'questions/create'
-end
-
-post '/rounds/:id/questions/create' do
-  params[:question] ||= {}
-  params[:question][:round_id] = params[:id]
-
-  @round = Round.find(params[:id])
-  halt 400, 'Round is already closed' unless @round.votable?
-
-  if Question.create_question_with_vote(params[:question], session[:email])
-    redirect "/rounds/#{@round.id}/questions"
-  else
-    haml :"questions/create"
-  end
+  @question = Question.find(params[:question_id])
+  haml :single_question
 end
 
 post "/rounds/:id/questions/:question_id/vote" do
@@ -46,5 +32,25 @@ post "/rounds/:id/questions/:question_id/vote" do
     })
   else
     halt 500, 'Could not save vote.'
+  end
+end
+
+get '/rounds/:id/questions/create' do
+  @round = Round.find(params[:id])
+  @question = Question.new(:round => @round)
+  haml :'questions/create'
+end
+
+post '/rounds/:id/questions/create' do
+  params[:question] ||= {}
+  params[:question][:round_id] = params[:id]
+
+  @round = Round.find(params[:id])
+  halt 400, 'Round is already closed' unless @round.votable?
+
+  if Question.create_question_with_vote(params[:question], session[:email])
+    redirect "/rounds/#{@round.id}/questions"
+  else
+    haml :"questions/create"
   end
 end

@@ -20,7 +20,7 @@ class Question < ActiveRecord::Base
     Question.transaction { Question.create(params) }
   end
 
-  def self.join_vote_info(round, mail, filter, question_id = nil)
+  def self.join_vote_info(round, mail, filter)
     up_votes_query_string = "count(NULLIF(v.vote, -1))"
     down_votes_query_string = "count(NULLIF(v.vote, 1))"
     # wilson score explanation: http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
@@ -39,10 +39,6 @@ class Question < ActiveRecord::Base
       })
       .where(:round => round)
       .group("questions.id")
-
-    unless question_id.nil?
-      query = query.where("v.id = #{question_id.to_i + 1}")
-    end
 
     if filter == 'myvotes'
       query.having("count(distinct v1.id) > 0")
