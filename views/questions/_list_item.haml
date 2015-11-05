@@ -1,6 +1,7 @@
+- round = question.round
 %li.list-group-item.row{:id => "question_#{question.id}", :class => (:voted if question.voted?(current_user)),
   :data => {:round => question.round_id, :id => question.id, :page => params[:page]}}
-  - if !@round.votable? || (@round.votable? && (question.try(:rank) || 12) < 11)
+  - if !round.votable? || (round.votable? && (question.try(:rank) || 12) < 11)
     .col-md-1{:style => "padding:0px;width: 20px"}
       %h5= "#{question.try(:rank)}."
   .voting.col-md-1{:style => "padding:0px;width: 50px"}
@@ -13,4 +14,4 @@
   .col-md-10.vote-text
     %h5
       %span.question&= question.question
-    %a{:href => "/rounds/#{@round.id}/questions/#{question.id}", :target => "_blank"} Permalink
+    %a{:href => "/rounds/#{round.id}/questions/#{question.id}", :target => "_blank"} Permalink
