@@ -13,4 +13,4 @@
   .col-md-10.vote-text
     %h5
       %span.question&= question.question
-    %a{:href => "questions/#{question.id}", :target => "_blank"} Permalink
+    %a{:href => "/rounds/#{@round.id}/questions/#{question.id}", :target => "_blank"} Permalink
