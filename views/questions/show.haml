@@ -9,12 +9,13 @@
   %p&= @round.description
 
 %p
-  %a{:href => "/rounds/#{@round.id}/questions"} Go back
-- if @question.nil?
-  %p{:style => "text-align: center;margin-top:100px;margin-bottom:100px"}
-    No Question found.
-- else
+  %a{:href => "/rounds/#{@round.id}/questions"} Back to Round
   %ul.list-group#question-list{:class => ('votable' if @round.votable?)}
     = haml :'questions/_list_item', :layout => false, :locals => {:question => @question}
 
 %script{:src => "/js/round.js"}
+
+:css
+  .permalink {
+    display: none;
+  }

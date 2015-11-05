@@ -14,4 +14,6 @@
   .col-md-10.vote-text
     %h5
       %span.question&= question.question
-    %a{:href => "/rounds/#{round.id}/questions/#{question.id}", :target => "_blank"} Permalink
+    .pull-right
+      %a.permalink{:href => "/questions/#{question.id}/show", :target => "_blank", :title => "Permalink"}
+        %span.glyphicon.glyphicon-new-window
