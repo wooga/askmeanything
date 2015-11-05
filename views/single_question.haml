@@ -1,0 +1,20 @@
+%h1.row
+  .col-md-10
+    = @round.title
+    %small
+      .span.date-format{:data => {:date => @round.deadline.try(:iso8601)}}
+        = @round.deadline.try(:strftime, '%Y-%m-%d %H:%M %Z')
+
+- unless @round.description.nil?
+  %p&= @round.description
+
+%p
+  %a{:href => "/rounds/#{@round.id}/questions"} Go back
+- if @question.nil?
+  %p{:style => "text-align: center;margin-top:100px;margin-bottom:100px"}
+    No Question found.
+- else
+  %ul.list-group#question-list{:class => ('votable' if @round.votable?)}
+    = haml :'questions/_list_item', :layout => false, :locals => {:question => @question}
+
+%script{:src => "/js/round.js"}

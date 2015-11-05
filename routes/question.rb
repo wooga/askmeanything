@@ -9,6 +9,12 @@ get '/rounds/:id/questions' do
   haml :index
 end
 
+get '/rounds/:id/questions/:question_id' do
+  @round = Round.find(params[:id])
+  @question = Question.find(params[:question_id])
+  haml :single_question
+end
+
 get '/rounds/:id/questions/create' do
   @round = Round.find(params[:id])
   @question = Question.new(:round => @round)
