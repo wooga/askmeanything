@@ -24,7 +24,15 @@ class Question < ActiveRecord::Base
     up_votes_query_string = "count(NULLIF(v.vote, -1))"
     down_votes_query_string = "count(NULLIF(v.vote, 1))"
     # wilson score explanation: http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
-    wilson_query_string = "ROUND(((#{up_votes_query_string} + 1.9208) / (#{up_votes_query_string} + #{down_votes_query_string}) - 1.96 * SQRT((#{up_votes_query_string} * #{down_votes_query_string}) / (#{up_votes_query_string} + #{down_votes_query_string}) + 0.9604) / (#{up_votes_query_string} + #{down_votes_query_string})) / (1 + 3.8416 / (#{up_votes_query_string} + #{down_votes_query_string})), 2)"
+    wilson_query_string =
+      "CASE WHEN #{up_votes_query_string} + #{down_votes_query_string} > 0" +
+      " THEN ROUND(((#{up_votes_query_string} + 1.9208) /" +
+      " (#{up_votes_query_string} + #{down_votes_query_string}) - 1.96 *" +
+      " SQRT((#{up_votes_query_string} * #{down_votes_query_string}) /" +
+      " (#{up_votes_query_string} + #{down_votes_query_string}) + 0.9604) /" +
+      " (#{up_votes_query_string} + #{down_votes_query_string})) /" +
+      " (1 + 3.8416 / (#{up_votes_query_string} +" +
+      " #{down_votes_query_string})), 2) ELSE 0 END"
     query = all.select("questions.*")
       .select("rank() over (ORDER BY #{wilson_query_string} DESC) as rank")
       .select("#{wilson_query_string} as score")
