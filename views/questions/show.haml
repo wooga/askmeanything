@@ -11,7 +11,7 @@
 %p
   %a{:href => "/rounds/#{@round.id}/questions"} Back to Round
   %ul.list-group#question-list{:class => ('votable' if @round.votable?)}
-    = haml :'questions/_list_item', :layout => false, :locals => {:question => @question}
+    = haml :'questions/_list_item', :layout => false, :locals => {:question => @question, :rank => nil}
 
 %script{:src => "/js/round.js"}
 

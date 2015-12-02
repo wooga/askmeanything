@@ -43,7 +43,7 @@
 - else
   %ul.list-group#question-list{:class => ('votable' if @round.votable?)}
     - @questions.each do |question|
-      = haml :'questions/_list_item', :layout => false, :locals => {:question => question}
+      = haml :'questions/_list_item', :layout => false, :locals => {:question => question, :rank => nil}
 
 = will_paginate @questions, renderer: BootstrapPagination::Sinatra
 
