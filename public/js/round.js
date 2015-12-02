@@ -9,7 +9,7 @@ $(document).ready(function() {
     var url = "/rounds/" + question.round + "/questions/" +  question.id + "/vote"
     var value = $(this).hasClass('vote-down') ? -1 : 1
     questionEl.spin()
-    $.post(url, {value: value, page:  question.page}).done(function(result) {
+    $.post(url, {value: value, page: question.page, rank: question.rank}).done(function(result) {
       $('#question_'+result.id).replaceWith(result.html)
     }).always(function() {
       questionEl.spin(false)

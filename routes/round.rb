@@ -79,13 +79,15 @@ post "/rounds/:id/questions/:question_id/vote" do
   halt 400, 'Voting is not possible anymore' unless @round.votable?
 
   question = Question.find(params[:question_id])
+
   if question.vote(params[:value].to_i, current_user)
     json({
       :id => question.id,
       :html =>  haml(:'questions/_list_item',
         :layout => false,
         :locals => {
-          :question => question
+          :question => question,
+          :rank => params[:rank]
         }
       )
     })
