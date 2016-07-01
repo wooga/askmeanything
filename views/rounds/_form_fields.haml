@@ -5,7 +5,7 @@
 .form-group
   %label{:for => :deadline} Deadline
   .input-group.date
-    %input.form-control{:id => :deadline, :name => 'round[deadline]', :value => @round.deadline.try(:strftime, '%Y-%m-%d %H:%M'), :placeholder  => 'Deadline', :type => :text, :required => true}
+    %input.form-control{:id => :deadline, :name => 'round[deadline]', :value => @round.deadline.try(:strftime, '%Y-%m-%d %H:%M %z'), :placeholder  => 'Deadline', :type => :text, :required => true}
     .input-group-addon
       .glyphicon.glyphicon-calendar
 
@@ -16,7 +16,7 @@
 
 :javascript
   $('#deadline').datetimepicker({
-    format: 'YYYY-MM-DD HH:mm',
+    format: 'YYYY-MM-DD HH:mm Z',
     sideBySide: true,
     useStrict: true
   });

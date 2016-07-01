@@ -3,7 +3,6 @@
     = @round.title
     %small
       .span.date-format{:data => {:date => @round.deadline.try(:iso8601)}}
-        = @round.deadline.try(:strftime, '%Y-%m-%d %H:%M %Z')
   .col-md-2
     - if @round.votable?
       %a.btn.btn-success{:href => "/rounds/#{@round.id}/questions/create"}
