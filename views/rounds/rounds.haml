@@ -26,7 +26,8 @@
         %td
           %a{:href => "/rounds/#{round.id}/questions"}
             &= round.title
-        %td= round.deadline.try(:strftime, '%Y-%m-%d %H:%M %Z')
+        %td
+          .span.date-format{:data => {:date => round.deadline.try(:iso8601)}}
         %td&= round.description
         %td= round.questions.count
         %td
