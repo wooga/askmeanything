@@ -34,6 +34,8 @@ end
 post '/rounds/:id/state_update' do
   case params[:state]
     when 'activate' then Round.find(params[:id]).activate
+    when 'question_phase' then Round.find(params[:id]).start_collect_questions
+    when 'voting_phase' then Round.find(params[:id]).start_voting
     when 'deactivate' then Round.find(params[:id]).deactivate
     when 'finalize' then Round.find(params[:id]).finalize
   end
@@ -48,8 +50,7 @@ get '/rounds/:id/questions' do
   session[:per_page] = params[:per_page]
 
   @round = Round.find(params[:id])
-  @questions = Question.join_vote_info(@round, current_user, params[:filter]).
-    page(params[:page]).per_page(params[:per_page])
+  @questions = Question.join_vote_info(@round, current_user, params[:filter]).page(params[:page]).per_page(params[:per_page])
 
   haml :index
 end
@@ -65,7 +66,7 @@ post '/rounds/:id/questions/create' do
   params[:question][:round_id] = params[:id]
 
   @round = Round.find(params[:id])
-  halt 400, 'Round is already closed' unless @round.votable?
+  halt 400, 'Round is already closed' unless @round.question_collection_phase?
 
   if Question.create_question_with_vote(params[:question], session[:email])
     redirect "/rounds/#{@round.id}/questions"
