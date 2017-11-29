@@ -11,18 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129112231) do
+ActiveRecord::Schema.define(version: 20171129144404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "questions", force: :cascade do |t|
     t.string   "question"
     t.integer  "round_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text     "mail"
+    t.text     "questioner"
   end
 
   add_index "questions", ["round_id"], name: "index_questions_on_round_id", using: :btree
@@ -35,6 +41,7 @@ ActiveRecord::Schema.define(version: 20171129112231) do
     t.datetime "updated_at",                     null: false
     t.string   "state",       default: "active"
     t.text     "salt"
+    t.text     "owner"
   end
 
   create_table "votes", force: :cascade do |t|

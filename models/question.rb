@@ -45,7 +45,7 @@ class Question < ActiveRecord::Base
       .select("max(v1.vote) as myvote")
       .joins("left join votes v on (v.question_id = questions.id)")
       .joins(CurrentUserJoinCondition % {
-        :hashed_mail => ActiveRecord::Base.sanitize(round.hashed_mail(mail))
+        :hashed_mail => ActiveRecord::Base.connection.quote(round.hashed_mail(mail))
       })
       .where(:round => round)
       .group("questions.id")

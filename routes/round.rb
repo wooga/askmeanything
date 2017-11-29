@@ -10,6 +10,8 @@ end
 
 post '/rounds/create' do
   @round = Round.new(params[:round])
+  @round.owner = current_user
+
   if @round.save
     redirect '/rounds'
   else
@@ -24,6 +26,8 @@ end
 
 post '/rounds/:id/update' do
   @round = Round.find(params[:id])
+  halt 401, 'Round can only be changed by the owner' if @round.owner != current_user
+
   if @round.update(params[:round])
     redirect '/rounds'
   else
@@ -32,13 +36,17 @@ post '/rounds/:id/update' do
 end
 
 post '/rounds/:id/state_update' do
+  round = Round.find(params[:id])
+  halt 401, 'Round can only be changed by the owner' if round.owner != current_user
+
   case params[:state]
-    when 'activate' then Round.find(params[:id]).activate
-    when 'question_phase' then Round.find(params[:id]).start_collect_questions
-    when 'voting_phase' then Round.find(params[:id]).start_voting
-    when 'deactivate' then Round.find(params[:id]).deactivate
-    when 'finalize' then Round.find(params[:id]).finalize
+    when 'activate' then round.activate
+    when 'question_phase' then round.start_collect_questions
+    when 'voting_phase' then round.start_voting
+    when 'deactivate' then round.deactivate
+    when 'finalize' then round.finalize
   end
+
   redirect '/rounds'
 end
 
@@ -62,10 +70,9 @@ get '/rounds/:id/questions/create' do
 end
 
 post '/rounds/:id/questions/create' do
-  params[:question]          ||= {}
-  params[:question][:round_id] = params[:id]
-
-  params[:question][:mail]   ||= session[:email]
+  params[:question]               ||= {}
+  params[:question][:round_id]      = params[:id]
+  params[:question][:questioner]  ||= current_user_name
 
   @round = Round.find(params[:id])
   halt 400, 'Round is already closed' unless @round.question_collection_phase?
