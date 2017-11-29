@@ -62,8 +62,10 @@ get '/rounds/:id/questions/create' do
 end
 
 post '/rounds/:id/questions/create' do
-  params[:question] ||= {}
+  params[:question]          ||= {}
   params[:question][:round_id] = params[:id]
+
+  params[:question][:mail]   ||= session[:email]
 
   @round = Round.find(params[:id])
   halt 400, 'Round is already closed' unless @round.question_collection_phase?

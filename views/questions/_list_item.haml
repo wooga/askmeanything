@@ -13,8 +13,9 @@
     %i.fa.fa-thumbs-o-down.vote.vote-down{:class => (:myvote if question.myvote(current_user) == -1)}
       = question.down_votes
   .col-md-10.vote-text
-    %h5
-      %span.question&= question.question
     .pull-right
       %a.permalink{:href => "/questions/#{question.id}/show", :target => "_blank", :title => "Permalink"}
         %span.glyphicon.glyphicon-new-window
+    %blockquote
+      %p.question&= question.question
+      %footer= question.mail
