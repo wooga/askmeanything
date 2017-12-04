@@ -4,7 +4,7 @@
     %small
       .span.date-format{:data => {:date => @round.deadline.try(:iso8601)}}
   .col-md-2
-    - if @round.votable?
+    - if @round.question_collection_phase?
       %a.btn.btn-success{:href => "/rounds/#{@round.id}/questions/create"}
         %span.glyphicon.glyphicon-plus
         Add a new Question

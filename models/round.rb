@@ -11,11 +11,17 @@ class Round < ActiveRecord::Base
   end
 
   state_machine :state, :initial => :active do
-    event :deactivate do
-      transition :active => :inactive
-    end
     event :activate do
       transition :inactive => :active
+    end
+    event :start_collect_questions do
+      transition :active => :question_collection_phase
+    end
+    event :start_voting do
+      transition :question_collection_phase => :voting_phase
+    end
+    event :deactivate do
+      transition :voting_phase => :inactive
     end
     event :finalize do
       transition :inactive => :finalized
@@ -30,7 +36,7 @@ class Round < ActiveRecord::Base
   end
 
   def votable?
-    deadline >= Time.now && active?
+    deadline >= Time.now && voting_phase?
   end
 
   def add_default_salt_value

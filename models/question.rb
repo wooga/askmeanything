@@ -23,6 +23,7 @@ class Question < ActiveRecord::Base
   def self.join_vote_info(round, mail, filter)
     up_votes_query_string = "count(NULLIF(v.vote, -1))"
     down_votes_query_string = "count(NULLIF(v.vote, 1))"
+
     # wilson score explanation: http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
     wilson_query_string =
       "CASE WHEN #{up_votes_query_string} + #{down_votes_query_string} > 0" +
@@ -33,6 +34,7 @@ class Question < ActiveRecord::Base
       " (#{up_votes_query_string} + #{down_votes_query_string})) /" +
       " (1 + 3.8416 / (#{up_votes_query_string} +" +
       " #{down_votes_query_string})), 2) ELSE 0 END"
+
     query = all.select("questions.*")
       .select("rank() over (ORDER BY #{wilson_query_string} DESC) as rank")
       .select("#{wilson_query_string} as score")
@@ -43,10 +45,16 @@ class Question < ActiveRecord::Base
       .select("max(v1.vote) as myvote")
       .joins("left join votes v on (v.question_id = questions.id)")
       .joins(CurrentUserJoinCondition % {
-        :hashed_mail => ActiveRecord::Base.sanitize(round.hashed_mail(mail))
+        :hashed_mail => ActiveRecord::Base.connection.quote(round.hashed_mail(mail))
       })
       .where(:round => round)
       .group("questions.id")
+
+    if !round.finalized?
+      query = query
+        .where("v1.id is null or v1.hashed_mail = ?", round.hashed_mail(mail))
+        .order("md5(concat(questions.id, \'#{mail}\'))")
+    end
 
     if filter == 'myvotes'
       query.having("count(distinct v1.id) > 0")

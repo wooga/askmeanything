@@ -48,7 +48,7 @@ Anonymity
 
 The app requires the email of the user but this is stored in a per-round
 hashed value in the database. I.e. a hashed email is unique per round and
-ensures that everyone only votes once per question.
+ensures that everyone only votes once per question. But your oauth username will be attached to your question and will be visible for everyone.
 
 Slack Integration
 ---
