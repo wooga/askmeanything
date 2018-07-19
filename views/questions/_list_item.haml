@@ -5,13 +5,9 @@
   - if !round.votable? || (round.votable? && rnkval < 11)
     .col-md-1.ranking_score{:style => "padding:0px;width: 20px"}
       %h5= "#{rnkval}."
-  .voting.col-md-1{:style => "padding:0px;width: 50px"}
-    .score{:style => "font-size: x-small; color: grey"}
-      = "Score #{question.score}"
+  .voting.col-md-1{:style => "padding-top:5px;width: 50px"}
     %i.fa.fa-thumbs-o-up.vote.vote-up{:class => (:myvote if question.myvote(current_user) == 1)}
-      = question.up_votes
     %i.fa.fa-thumbs-o-down.vote.vote-down{:class => (:myvote if question.myvote(current_user) == -1)}
-      = question.down_votes
   .col-md-10.vote-text
     %h5
       %span.question&= question.question
