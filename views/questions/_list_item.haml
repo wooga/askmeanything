@@ -1,13 +1,18 @@
 - round = question.round
 - rnkval = (question.try(:rank) || rank || 100).to_i
+- should_show_vote_count = round.finalized? && rnkval < 11
 %li.list-group-item.row{:id => "question_#{question.id}", :class => (:voted if question.voted?(current_user)),
   :data => {:round => question.round_id, :id => question.id, :page => params[:page], :rank => rnkval}}
-  - if round.finalized? && rnkval < 11
+  - if should_show_vote_count
     .col-md-1.ranking_score{:style => "padding:0px;width: 20px"}
       %h5= "#{rnkval}."
-  .voting.col-md-1{:style => "padding-top:5px;width: 50px"}
+  .voting.col-md-1{:style => "padding:0px;width: 50px"}
     %i.fa.fa-thumbs-o-up.vote.vote-up{:class => (:myvote if question.myvote(current_user) == 1)}
+      - if should_show_vote_count
+        = question.up_votes
     %i.fa.fa-thumbs-o-down.vote.vote-down{:class => (:myvote if question.myvote(current_user) == -1)}
+      - if should_show_vote_count
+        = question.down_votes
   .col-md-10.vote-text
     .pull-right
       %a.permalink{:href => "/questions/#{question.id}/show", :target => "_blank", :title => "Permalink"}
