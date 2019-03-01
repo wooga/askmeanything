@@ -1,5 +1,5 @@
 get '/rounds' do
-  @rounds = Round.page(params[:page])
+  @rounds = Round.paginate(per_page:5, page: params[:page])
   haml :'rounds/rounds'
 end
 
