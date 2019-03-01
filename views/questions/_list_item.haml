@@ -18,5 +18,5 @@
       %a.permalink{:href => "/questions/#{question.id}/show", :target => "_blank", :title => "Permalink"}
         %span.glyphicon.glyphicon-new-window
     %blockquote
-      %p.question&= question.question
+      %p.question{:style => "word-break: break-word;"}&= question.question
       %footer= question.questioner

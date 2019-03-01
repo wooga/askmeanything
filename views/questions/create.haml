@@ -1,4 +1,4 @@
 %form{:method => :post, :action=>"/rounds/#{@round.id}/questions/create"}
-  = haml :'questions/_form_fields', :layout => false, :locals => {:text_limit => 200}
+  = haml :'questions/_form_fields', :layout => false, :locals => {:text_limit => 255}
   %button.btn.btn-success{:type => :submit} Create
   %p.small.text-danger Your question will be visible under your real name for everyone immediately!
