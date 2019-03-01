@@ -3,6 +3,7 @@ require 'statistics2'
 class Question < ActiveRecord::Base
   belongs_to :round
   has_many :votes
+  validates :question, length: { maximum: 255 }
 
   CurrentUserJoinCondition = <<-SQL
     LEFT JOIN votes v1 ON (
