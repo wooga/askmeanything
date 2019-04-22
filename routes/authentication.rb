@@ -23,7 +23,7 @@ get '/oauth2callback' do
   # parsed is a handy method on an OAuth2::Response object that will
   # intelligently try and parse the response.body
   @email = access_token.
-    get('https://www.googleapis.com/userinfo/email?alt=json').
+    get('https://openidconnect.googleapis.com/v1/userinfo/').
     parsed["data"]["email"]
 
   if ENV['ACCESS_DOMAINS'].split(/,/).any? { |a| @email =~ /@#{a}$/ } ||
