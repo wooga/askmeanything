@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.4.5'
 
-gem 'puma', '~> 2.16.0'
+gem 'puma', '~> 3.7.0'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'haml'
