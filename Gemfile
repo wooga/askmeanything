@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '2.2.2'
+ruby '2.4.5'
 
-gem 'puma'
+gem 'puma', '~> 2.16.0'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'haml'

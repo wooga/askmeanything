@@ -74,8 +74,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puma (2.11.3)
-      rack (>= 1.1, < 2.0)
+    puma (2.16.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -137,7 +136,7 @@ DEPENDENCIES
   oauth2
   pg
   pry
-  puma
+  puma (~> 2.16.0)
   rake
   sinatra
   sinatra-contrib
@@ -147,7 +146,7 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 RUBY VERSION
-   ruby 2.2.2p95
+   ruby 2.4.5p335
 
 BUNDLED WITH
-   1.16.0
+   1.16.6
