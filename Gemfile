@@ -12,7 +12,7 @@ gem 'will_paginate-bootstrap'
 
 gem "nokogiri", ">= 1.8.5"
 gem 'activerecord', '~> 4.2.5'
-gem 'active_record_migrations', '~> 4.2.5'
+gem 'active_record_migrations', '~> 4.2.6'
 gem 'state_machine', :require => 'state_machine/core'
 gem 'state_machines-activerecord'
 gem 'pg'
