@@ -24,5 +24,5 @@ gem 'rake'
 
 group :development do
   gem 'foreman'
-  gem 'dotenv-rails'
+  gem 'dotenv-rails', '>= 2.2.2'
 end
