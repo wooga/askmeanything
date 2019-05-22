@@ -74,7 +74,7 @@ GEM
       slop (~> 3.4)
     puma (3.7.1)
     rack (1.6.11)
-    rack-protection (1.5.3)
+    rack-protection (1.5.5)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
