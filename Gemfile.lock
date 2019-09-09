@@ -59,7 +59,7 @@ GEM
     multi_json (1.11.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    nokogiri (1.10.3)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
@@ -131,7 +131,7 @@ DEPENDENCIES
   dotenv-rails (>= 2.2.2)
   foreman
   haml
-  nokogiri (>= 1.8.5)
+  nokogiri (>= 1.10.4)
   oauth2
   pg
   pry
