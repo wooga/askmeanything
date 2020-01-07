@@ -73,7 +73,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puma (3.7.1)
+    puma (3.12.2)
     rack (1.6.11)
     rack-protection (1.5.5)
       rack
@@ -137,7 +137,7 @@ DEPENDENCIES
   oauth2
   pg
   pry
-  puma (~> 3.7.0)
+  puma (~> 3.12.2)
   rack (>= 1.6.11)
   rake
   sinatra

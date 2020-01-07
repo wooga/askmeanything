@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.4.5'
 
-gem 'puma', '~> 3.7.0'
+gem 'puma', '~> 3.12.2'
 gem 'rack', '>= 1.6.11'
 gem 'sinatra'
 gem 'sinatra-contrib'
