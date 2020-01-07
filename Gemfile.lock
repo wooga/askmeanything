@@ -60,6 +60,7 @@ GEM
     multi_json (1.11.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    nio4r (2.5.2)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     oauth2 (1.0.0)
@@ -73,7 +74,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puma (3.12.2)
+    puma (4.3.1)
+      nio4r (~> 2.0)
     rack (1.6.12)
     rack-protection (1.5.5)
       rack
@@ -133,12 +135,12 @@ DEPENDENCIES
   dotenv-rails (>= 2.2.2)
   foreman
   haml
-  nokogiri (>= 1.10.4)
+  nokogiri
   oauth2
   pg
   pry
-  puma (~> 3.12.2)
-  rack (>= 1.6.11)
+  puma
+  rack
   rake
   sinatra
   sinatra-contrib
