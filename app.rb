@@ -27,6 +27,7 @@ use(Rack::Session::Cookie,
     :secret       => ENV['COOKIE_SECRET'],
     :expire_after => 86400)
 
+require_relative 'lib/initializer.rb'
 require_relative 'lib/wham_helper.rb'
 require_relative 'lib/slack_options.rb'
 
