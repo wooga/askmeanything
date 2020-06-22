@@ -11,6 +11,8 @@ require 'action_view'
 require 'haml'
 require 'tilt/haml'
 require 'will_paginate-bootstrap'
+require 'omniauth'
+require 'omniauth-headers'
 
 ENV['RACK_ENV'] ||= 'development'
 ENV['environment'] = ENV['RACK_ENV']
