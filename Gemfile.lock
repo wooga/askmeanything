@@ -39,17 +39,16 @@ GEM
     dotenv-rails (2.7.5)
       dotenv (= 2.7.5)
       railties (>= 3.2, < 6.1)
-    erubi (1.9.0)
-    faraday (1.0.1)
-      multipart-post (>= 1.2, < 3)
-    foreman (0.87.1)
+    erubis (2.7.0)
+    foreman (0.78.0)
+      thor (~> 0.19.1)
     haml (5.1.2)
       temple (>= 0.8.0)
       tilt
-    i18n (1.8.3)
+    hashie (4.1.0)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    jwt (2.2.1)
-    loofah (2.6.0)
+    loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     method_source (1.0.0)
@@ -63,12 +62,11 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
-    oauth2 (1.4.4)
-      faraday (>= 0.8, < 2.0)
-      jwt (>= 1.0, < 3.0)
-      multi_json (~> 1.3)
-      multi_xml (~> 0.5)
-      rack (>= 1.2, < 3)
+    omniauth (1.9.1)
+      hashie (>= 3.4.6)
+      rack (>= 1.6.2, < 3)
+    omniauth-headers (0.1.1)
+      omniauth (>= 1.0)
     pg (1.2.3)
     pry (0.13.1)
       coderay (~> 1.1)
@@ -134,7 +132,7 @@ DEPENDENCIES
   foreman
   haml
   nokogiri
-  oauth2
+  omniauth-headers
   pg
   pry
   puma
