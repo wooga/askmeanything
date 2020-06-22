@@ -48,6 +48,7 @@ GEM
     hashie (4.1.0)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
+    jwt (2.2.1)
     loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -131,7 +132,9 @@ DEPENDENCIES
   dotenv-rails (>= 2.2.2)
   foreman
   haml
+  jwt
   nokogiri
+  omniauth
   omniauth-headers
   pg
   pry
