@@ -35,10 +35,6 @@
       "description": "Part of the hashing of emails to ensure anonymity",
       "generator": "secret"
     },
-    "SLACK_TOKENS": {
-      "description": "For slack integration, define a comma list of tokens",
-      "required": false
-    },
     "RACK_ENV": {
       "description": "Rack environment",
       "value": "production"
