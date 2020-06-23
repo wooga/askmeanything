@@ -1,6 +1,6 @@
 require "jwt"
 
-get '/me/auth/:provider/callback' do
+get '/auth/:provider/callback' do
   oauth_hash = request.env["omniauth.auth"]
 
   if oauth_hash && oauth_hash.info["email"] =~ /[@]wooga.(net|xyz)$/
