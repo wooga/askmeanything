@@ -41,4 +41,3 @@ Dir[File.join(File.dirname(__FILE__),'routes','*.rb')].each { |a| require a }
 helpers WhamHelper
 
 use Rack::Deflater
-use ActiveRecord::ConnectionAdapters::ConnectionManagement
