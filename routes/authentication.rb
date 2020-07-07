@@ -16,11 +16,11 @@ get '/auth/:provider/callback' do
       user: user,
       uid:  decoded_token['unique_name']
     }
-    redirect session[:redirect_to] || '/me'
+    redirect session[:redirect_to] || '/'
   end
 end
 
-get '/me/auth/logout' do
+get '/auth/logout' do
   session[:authenticated] = false
-  redirect '/me'
+  redirect '/'
 end
