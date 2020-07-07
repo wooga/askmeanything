@@ -3,7 +3,7 @@ require "jwt"
 get '/auth/:provider/callback' do
   oauth_hash = request.env["omniauth.auth"]
 
-  if oauth_hash && ENV['ACCESS_DOMAINS'].split(/,/).any? { |a| oauth_hash.info["email"] =~ /@#{a}$/
+  if oauth_hash && ENV['ACCESS_DOMAINS'].split(/,/).any? { |a| oauth_hash.info["email"] =~ /@#{a}$/ }
     session[:authenticated] = true
     token = oauth_hash.info["token"].split(' ').last
     decoded_token = JWT.decode(token, nil, false).first
