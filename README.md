@@ -1,5 +1,5 @@
 Woogas' Ask Me Anything Application
-===
+====
 
 Provides basic AmA functionality, it's *Raison d'être* is that google
 shutdown their AmA tool, so we DIY'ed!
@@ -51,12 +51,4 @@ The app requires the email of the user logged in to vote for questions, however,
 hashed value in the database. I.e. a hashed email is unique per round and
 ensures that everyone only votes once per question. 
 
-Slack Integration
----
-
-If you're using slack, then you can also integrate it. The slack
-[endpoint](https://github.com/wooga/askmeanything/blob/master/routes/slack.rb)
-is ```/slack/commands``` and the slack token can be defined using the
-```SLACK_TOKEN``` environment variable.
-
-The command is assumed to be ```/ama```, so please use that at slack.
+But your oauth username will be attached to your question and will be visible for everyone.
