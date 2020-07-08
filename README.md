@@ -43,11 +43,12 @@ fill it out and start application with
 
 done.
 
-Anonymity
+No Anonymity on posting questions, anonymous voting
 ---
+Your oauth unique id (usually email) will be attached to your questions posted and will be visible for everyone.
 
-The app requires the email of the user but this is stored in a per-round
+The app requires the email of the user logged in to vote for questions, however, this is stored in a per-round
 hashed value in the database. I.e. a hashed email is unique per round and
 ensures that everyone only votes once per question. 
+
 But your oauth username will be attached to your question and will be visible for everyone.
- 
