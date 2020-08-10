@@ -77,7 +77,7 @@ post '/rounds/:id/questions/create' do
   @round = Round.find(params[:id])
   halt 400, 'Round is already closed' unless @round.question_collection_phase?
 
-  if Question.create_question_with_vote(params[:question], session[:email])
+  if Question.create_question_with_vote(params[:question], session[:user][:user][:email])
     redirect "/rounds/#{@round.id}/questions"
   else
     haml :"questions/create"
