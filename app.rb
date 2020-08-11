@@ -26,6 +26,7 @@ raise "vote secret is required" if settings.vote_secret.blank?
 
 use(Rack::Session::Cookie,
     :path         => '/',
+    :same_site     => :lax,
     :secret       => ENV['COOKIE_SECRET'],
     :expire_after => 86400)
 
